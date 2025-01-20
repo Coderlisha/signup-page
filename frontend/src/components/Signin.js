@@ -11,15 +11,12 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://signup-page-2q5d.vercel.app/api/signin",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-          // mode: "no-cors",
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        // mode: "no-cors",
+      });
 
       if (!response.ok) {
         const errorMessage = await response.text();

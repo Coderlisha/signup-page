@@ -8,12 +8,19 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    photo: null,
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+
+    if (name === "photo") {
+      setFormData({ ...formData, photo: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
     setError("");
   };
 
@@ -25,7 +32,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword, photo } = formData;
 
     // Password validations
     if (password !== confirmPassword) {
@@ -40,19 +47,24 @@ const Signup = () => {
     }
 
     try {
-      const URL = "https://signup-page-2q5d.vercel.app/api/signup";
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", name);
+      formDataToSend.append("email", email);
+      formDataToSend.append("password", password);
+      formDataToSend.append("photo", photo);
 
-      const response = await axios.post(URL, {
-        name,
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/signup",
+        formDataToSend
+      );
+
       alert(response.data.message);
       setFormData({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
+        photo: null,
       });
     } catch (error) {
       console.error(error);
@@ -61,7 +73,7 @@ const Signup = () => {
   };
 
   const handleSignInRedirect = () => {
-    navigate("/Signin"); // Redirect to the sign-in page
+    navigate("/Signin");
   };
 
   return (
@@ -101,6 +113,14 @@ const Signup = () => {
             name="confirmPassword"
             placeholder="Confirm Password"
             value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+            style={styles.input}
+          />
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
             onChange={handleChange}
             required
             style={styles.input}
