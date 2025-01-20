@@ -6,11 +6,14 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
-const corsOptions = {
-  origin: "https://signup-page-lovat.vercel.app",
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+
+app.use(
+  cors({
+    origin: "https://signup-page-lovat.vercel.app", // Allow this specific origin
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific methods
+    credentials: true, // Allow credentials if needed
+  })
+);
 
 app.use(express.json());
 app.use(bodyParser.json());
