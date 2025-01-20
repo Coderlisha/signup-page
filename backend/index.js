@@ -10,18 +10,16 @@ require("dotenv").config();
 
 const app = express();
 
-
 app.use(
   cors({
-    origin: "http://localhost:3000", 
-    methods: ["GET", "POST", "PUT", "DELETE"], 
-    credentials: true, 
+    origin: "https://signup-page-lovat.vercel.app/",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 
 app.use(express.json());
 app.use(bodyParser.json());
-
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,42 +27,36 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "numetry", 
-    allowed_formats: ["jpg", "png", "jpeg"], 
+    folder: "numetry",
+    allowed_formats: ["jpg", "png", "jpeg"],
   },
 });
 
 const upload = multer({ storage });
-
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-
 const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  profilePhoto: String, 
+  profilePhoto: String,
 });
 
 const User = mongoose.model("User", userSchema);
-
 
 app.get("/", (req, res) => {
   res.send("Hi");
 });
 
-
 app.post("/api/signup", upload.single("photo"), async (req, res) => {
   const { name, email, password } = req.body;
-
 
   console.log(req.file);
 
@@ -74,12 +66,11 @@ app.post("/api/signup", upload.single("photo"), async (req, res) => {
   }
 
   try {
-  
     const newUser = new User({
       name,
       email,
-      password, 
-      profilePhoto, 
+      password,
+      profilePhoto,
     });
 
     await newUser.save();
@@ -91,7 +82,6 @@ app.post("/api/signup", upload.single("photo"), async (req, res) => {
     res.status(500).json({ message: "Error saving user", error });
   }
 });
-
 
 app.post("/api/signin", async (req, res) => {
   const { email, password } = req.body;
@@ -119,7 +109,6 @@ app.post("/api/signin", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 
 const PORT = 5000;
 app.listen(PORT, () =>

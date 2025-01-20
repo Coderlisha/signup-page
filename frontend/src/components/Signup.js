@@ -54,7 +54,7 @@ const Signup = () => {
       formDataToSend.append("photo", photo);
 
       const response = await axios.post(
-        "http://localhost:5000/api/signup",
+        "https://signup-page-2q5d.vercel.app/api/signup",
         formDataToSend
       );
 
