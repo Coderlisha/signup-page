@@ -1,20 +1,25 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
+// const cors = require("cors");
 const bodyParser = require("body-parser");
-
 
 require("dotenv").config();
 
 const app = express();
 
+// app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
-
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-
-
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -23,7 +28,6 @@ mongoose
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
 
 const userSchema = new mongoose.Schema({
   name: String,
@@ -37,7 +41,6 @@ module.exports = { User };
 app.get("/", (req, res) => {
   res.send("Hi");
 });
-
 
 app.post("/api/signup", async (req, res) => {
   const { name, email, password } = req.body;
@@ -54,17 +57,13 @@ app.post("/api/signin", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-  
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).send("User not found");
-        
     }
 
-  
     if (user.password !== password) {
       return res.status(401).send("Invalid credentials");
-       
     }
 
     res.status(200).send("Login successful");
