@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
 app.post("/api/signup", upload.single("photo"), async (req, res) => {
   const { name, email, password } = req.body;
 
-  console.log(req.file);
+  // console.log(req.file);
 
   const profilePhoto = req.file ? req.file.path : null; // Cloudinary image URL
   if (!profilePhoto) {
