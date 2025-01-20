@@ -12,7 +12,7 @@ const SignIn = () => {
 
     try {
       const response = await fetch(
-        "https://signup-page-gi8z.vercel.app/api/signin",
+        "https://signup-page-2q5d.vercel.app/api/signin",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
