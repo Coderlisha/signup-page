@@ -40,7 +40,7 @@ const Signup = () => {
     }
 
     try {
-      const URL = "http://localhost:5000/api/signup";
+      const URL = "https://signup-page-gi8z.vercel.app/api/signup";
 
       const response = await axios.post(URL, {
         name,

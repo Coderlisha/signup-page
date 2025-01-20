@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useFetcher, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -11,21 +11,25 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://signup-page-gi8z.vercel.app/api/signin",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          // mode: "no-cors",
+        }
+      );
 
       if (!response.ok) {
-        const errorMessage = await response.text(); // Read plain text response
-        alert(errorMessage); // Show error message from the server
+        const errorMessage = await response.text();
+        alert(errorMessage);
         return;
       }
 
-      const successMessage = await response.text(); // Read plain text response
-      alert(successMessage); // Show success message from the server
-      navigate("/home"); // Redirect to the home page or dashboard
+      const successMessage = await response.text();
+      alert(successMessage);
+      navigate("/home");
     } catch (error) {
       console.error("Error during sign-in:", error);
       alert("Failed to sign in. Please try again later.");
