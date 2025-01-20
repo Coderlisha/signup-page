@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://signup-page-lovat.vercel.app/",
+    origin: "https://signup-page-lovat.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
