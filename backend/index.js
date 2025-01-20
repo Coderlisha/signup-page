@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const app = express();
 const corsOptions = {
-  origin: "https://signup-page-2q5d.vercel.app",
+  origin: "https://signup-page-lovat.vercel.app",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
