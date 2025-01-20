@@ -98,11 +98,6 @@ app.post("/api/signin", async (req, res) => {
 
     res.status(200).json({
       message: "Login successful",
-      user: {
-        name: user.name,
-        email: user.email,
-        profilePhoto: user.profilePhoto,
-      },
     });
   } catch (error) {
     console.error("Error during login:", error);
