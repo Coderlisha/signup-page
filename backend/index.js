@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 
 const corsOptions = {
-  origin: "https://signup-page-lovat.vercel.app",
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
@@ -38,10 +38,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -75,6 +72,7 @@ app.post("/api/signup", upload.single("photo"), async (req, res) => {
       password,
       profilePhoto,
     });
+    console.log(newUser);
 
     await newUser.save();
     res

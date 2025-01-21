@@ -53,10 +53,16 @@ const Signup = () => {
       formDataToSend.append("password", password);
       formDataToSend.append("photo", photo);
 
+      // This is for production
       const response = await axios.post(
         "https://signup-page-2q5d.vercel.app/api/signup",
         formDataToSend
       );
+      // This is for development
+      // const response = await axios.post(
+      //   "http://localhost:5000/api/signup",
+      //   formDataToSend
+      // );
 
       alert(response.data.message);
       setFormData({
